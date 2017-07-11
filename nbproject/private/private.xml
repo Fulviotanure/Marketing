@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Fulvio/Documents/NetBeansProjects/Marketing/src/marketing/Marketing.java</file>
+            <file>file:/C:/Users/Fulvio/Documents/NetBeansProjects/Marketing/src/marketing/view/EditarPracas.java</file>
+            <file>file:/C:/Users/Fulvio/Documents/NetBeansProjects/Marketing/src/marketing/view/EditarCampanhas.java</file>
             <file>file:/C:/Users/Fulvio/Documents/NetBeansProjects/Marketing/src/marketing/dao/CampanhaDAO.java</file>
-            <file>file:/C:/Users/Fulvio/Documents/NetBeansProjects/Marketing/src/marketing/view/CadastroCampanhas.java</file>
-            <file>file:/C:/Users/Fulvio/Documents/NetBeansProjects/Marketing/src/marketing/view/MenuPrincipal.java</file>
+            <file>file:/C:/Users/Fulvio/Documents/NetBeansProjects/Marketing/src/marketing/model/Campanha.java</file>
+            <file>file:/C:/Users/Fulvio/Documents/NetBeansProjects/Marketing/src/marketing/dao/PracaDAO.java</file>
         </group>
     </open-files>
 </project-private>

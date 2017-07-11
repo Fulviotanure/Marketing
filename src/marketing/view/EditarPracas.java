@@ -5,8 +5,19 @@
  */
 package marketing.view;
 
+import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import marketing.dao.PracaDAO;
+import static marketing.dao.PracaDAO.listar;
+import marketing.model.Praca;
 
 /**
  *
@@ -20,6 +31,44 @@ public class EditarPracas extends javax.swing.JFrame {
     public EditarPracas() {
         initComponents();
         setLocationRelativeTo(null);
+        
+        
+         DefaultTableModel modelo = (DefaultTableModel) tabPraca.getModel();
+        
+        readJTable();
+    }
+    
+    
+    public void  readJTable(){
+        
+         DefaultTableModel modelo = (DefaultTableModel) tabPraca.getModel();
+         modelo.setNumRows(0);
+         
+          ArrayList<Praca> lista = null;
+          
+         
+         
+          try{
+            lista = PracaDAO.listar();
+        }catch(Exception e){
+           JOptionPane.showMessageDialog(null, "ERRO");
+        }
+          
+         
+          
+         for(Praca p:lista){
+      
+         modelo.addRow(new Object[]{
+        
+         p.getId_praca(),
+         p.getNome(),
+         p.getTipo(),
+         p.getValor_diario()
+                 
+     });
+        
+    }
+         
     }
 
     /**
@@ -45,24 +94,40 @@ public class EditarPracas extends javax.swing.JFrame {
 
         tabPraca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Nome", "Tipo", "valor diario"
+                "ID", "Nome", "Tipo", "valor diario"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabPraca.setToolTipText("");
+        tabPraca.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabPracaMouseClicked(evt);
+            }
         });
         jScrollPane1.setViewportView(tabPraca);
+        if (tabPraca.getColumnModel().getColumnCount() > 0) {
+            tabPraca.getColumnModel().getColumn(0).setResizable(false);
+            tabPraca.getColumnModel().getColumn(1).setResizable(false);
+            tabPraca.getColumnModel().getColumn(2).setResizable(false);
+            tabPraca.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         jLabel1.setText("Pracas");
 
@@ -82,6 +147,11 @@ public class EditarPracas extends javax.swing.JFrame {
         });
 
         btExcluir.setText("Excluir");
+        btExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btExcluirActionPerformed(evt);
+            }
+        });
 
         btVoltar.setText("Voltar");
         btVoltar.addActionListener(new java.awt.event.ActionListener() {
@@ -95,56 +165,49 @@ public class EditarPracas extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(txtPesquisar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btPesquisar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(txtPesquisar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btPesquisar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(170, 170, 170)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(53, 53, 53)
-                                .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(46, 46, 46)
-                                .addComponent(btVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(217, 217, 217)
+                        .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 245, Short.MAX_VALUE)
+                        .addComponent(btVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(337, 337, 337)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(28, 28, 28)
                 .addComponent(jLabel1)
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btPesquisar))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btEditar)
                     .addComponent(btExcluir)
+                    .addComponent(btEditar)
                     .addComponent(btVoltar))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(44, 44, 44))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisarActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling cosdde here:
     }//GEN-LAST:event_txtPesquisarActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
@@ -153,6 +216,38 @@ CadastroPracas frame = new CadastroPracas(); frame.setVisible(true);    }//GEN-L
     private void btVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoltarActionPerformed
 this.dispose();
     }//GEN-LAST:event_btVoltarActionPerformed
+
+    private void tabPracaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPracaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabPracaMouseClicked
+
+    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
+if (tabPraca.getSelectedRow() != -1) {
+
+            Praca praca = new Praca();
+
+            praca.setId_praca((int) tabPraca.getValueAt(tabPraca.getSelectedRow(), 0));
+
+            int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir?", "Confirmação", JOptionPane.YES_NO_OPTION);
+
+            if (resposta == JOptionPane.YES_OPTION) {
+                try {
+                    PracaDAO.excluir(praca);
+                } catch (SQLException ex) {
+                    Logger.getLogger(EditarCampanhas.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(EditarCampanhas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (resposta == JOptionPane.NO_OPTION) {
+                return;
+            }
+
+            readJTable();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma praca para excluir.");
+        }
+    }//GEN-LAST:event_btExcluirActionPerformed
 
     /**
      * @param args the command line arguments

@@ -15,16 +15,18 @@ public class Campanha {
     private String periodo;
     private double valor;
     private String descricao;
+    private String link;
 
     public Campanha() {
     }
 
-    public Campanha(int id_campanhas, String nome, String periodo, double valor, String descricao) {
+    public Campanha(int id_campanhas, String nome, String periodo, double valor, String descricao, String link) {
         this.id_campanhas = id_campanhas;
         this.nome = nome;
         this.periodo = periodo;
         this.valor = valor;
         this.descricao = descricao;
+        this.link = link;
     }
 
     public int getId_campanhas() {
@@ -67,8 +69,13 @@ public class Campanha {
         this.descricao = descricao;
     }
 
-    
-    
-    
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     
 }

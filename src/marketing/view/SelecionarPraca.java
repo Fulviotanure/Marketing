@@ -38,6 +38,11 @@ public class SelecionarPraca extends javax.swing.JFrame {
         jLabel1.setText("Selecione uma Praça");
 
         CombBoxPracas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Google ads", "Tv", "Jornal", "Revista" }));
+        CombBoxPracas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CombBoxPracasActionPerformed(evt);
+            }
+        });
 
         btSelecionar.setText("Selecionar");
         btSelecionar.addActionListener(new java.awt.event.ActionListener() {
@@ -91,13 +96,15 @@ public class SelecionarPraca extends javax.swing.JFrame {
 
     private void btSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSelecionarActionPerformed
             
-        CadastroCampanhas frame = new CadastroCampanhas();
-frame.setVisible(true);
+
     }//GEN-LAST:event_btSelecionarActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
 this.dispose();
     }//GEN-LAST:event_btCancelarActionPerformed
+
+    private void CombBoxPracasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CombBoxPracasActionPerformed
+    }//GEN-LAST:event_CombBoxPracasActionPerformed
 
     /**
      * @param args the command line arguments

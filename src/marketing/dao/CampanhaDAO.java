@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class CampanhaDAO {
@@ -19,7 +20,7 @@ public class CampanhaDAO {
 
         boolean resultado = false;
 
-        String sql = "insert into tb_campanha (nome, periodo, valor, descricao ) values (?,?,?,?)";
+        String sql = "insert into tb_campanha (nome, periodo, valor, descricao, link ) values (?,?,?,?,?)";
 
         try {
             conexao.setAutoCommit(false);
@@ -29,6 +30,8 @@ public class CampanhaDAO {
             stmt.setString(2, campanha.getPeriodo());
             stmt.setDouble(3, campanha.getValor());
             stmt.setString(4, campanha.getDescricao());
+            stmt.setString(5, campanha.getLink());
+            
 
             stmt.executeUpdate();
 
@@ -38,7 +41,8 @@ public class CampanhaDAO {
             campanha.setId_campanhas(codigo);
             stmt.close();
 
-            
+             conexao.commit();
+            resultado = true;
             
         } catch (SQLException ex) {
             try {
@@ -58,7 +62,196 @@ public class CampanhaDAO {
 
         return resultado;
     }
+   
+   
+// Gera um objeto a partir da extrutura do banco de dados
+    public static Campanha extrairObjeto(ResultSet rs) throws SQLException {
+        Campanha c = null;
+        
+        try{
+            int id = rs.getInt("id_campanha");
+            
+            if(!rs.wasNull()){
+                c = new Campanha();
 
+                c.setId_campanhas(rs.getInt("id_campanha"));
+                c.setNome(rs.getString("nome"));
+                c.setPeriodo(rs.getString("periodo"));
+                c.setValor(rs.getDouble("valor"));
+                c.setLink(rs.getString("link"));
+            }
+        }
+        catch(SQLException e){
+            throw e;
+        }
+        
+        return c;
+    }
+
+public static Campanha Buscar(String nome) throws SQLException, ClassNotFoundException{
+        
+        Connection conn = null;
+        PreparedStatement  preparedStatement = null;
+        ResultSet rs = null;
+        String SQL = "";
+        Campanha c = null;
+        
+        try{
+        // Obtem conexao com BD
+        conn = ConnectionFactory.getConnection();
+        
+        // Comando SQL 
+        SQL = "SELECT * FROM tab_campanha " +
+                " WHERE nome = ? ";
+
+        preparedStatement = conn.prepareStatement(SQL);
+
+        preparedStatement.setString(1, nome);
+                
+        // Para buscar informações
+        rs = preparedStatement.executeQuery();   
+
+        // Verifica se possui dados
+            if (rs.next()) {
+
+                c = CampanhaDAO.extrairObjeto(rs);
+
+             } 
+        } catch(Exception e){
+            // Caso ocorra excecao envia para metodo que
+            //o chamou
+            throw e;
+        }finally{
+            // Fecha conexao
+            if(conn != null)
+                conn.close();
+        }
+        
+        return c;
+    }
+
+
+public static ArrayList listar() throws SQLException, ClassNotFoundException{
+        
+        Connection conn = null;
+        PreparedStatement  preparedStatement = null;
+        ResultSet rs = null;
+        String SQL = "";
+        ArrayList<Campanha> lista = new ArrayList();
+        
+        // Obtem conexao com BD
+        conn = ConnectionFactory.getConnection();
+        
+        // Comando SQL 
+        SQL = "SELECT * FROM tb_campanha " ;
+
+        preparedStatement = conn.prepareStatement(SQL);
+
+        // Para buscar informações
+        rs = preparedStatement.executeQuery();   
+
+        // Verifica se possui dados
+        while (rs.next()) {
+            
+           Campanha c = new Campanha();
+            
+                c.setId_campanhas(rs.getInt("id_campanha"));
+                c.setNome(rs.getString("nome"));
+                c.setPeriodo(rs.getString("periodo"));
+                c.setValor(rs.getDouble("valor"));
+                c.setLink(rs.getString("link"));
+            
+            
+            //se quiser pegar a hora tambem
+            //p.setDtCadastro(rs.getTimestamp("dt_cadastro")); 
+            
+            
+            lista.add(c);
+         } 
+        
+        // Fechar conexao
+        conn.close();
+        
+        return lista;
+    }
+
+
+   public static void excluir(Campanha c) throws SQLException, ClassNotFoundException{
+        Connection conn = null;
+        PreparedStatement  preparedStatement = null;
+        ResultSet rs = null;
+        String SQL = "";
+        
+        try{
+            // Obtem conexao com BD
+            conn = ConnectionFactory.getConnection();
+
+            // Comando SQL 
+            SQL = "DELETE FROM tb_campanha " +
+                  "WHERE id_campanha = ? ";
+
+            preparedStatement = conn.prepareStatement(SQL);
+
+            preparedStatement.setInt(1, c.getId_campanhas());
+           
+         
+       
+            // Executa comando no banco
+            preparedStatement.executeUpdate();  
+
+        } catch(Exception e){
+            // Caso ocorra excecao envia para metodo que
+            //o chamou
+            throw e;
+        }finally{
+            // Fecha conexao
+            if(conn != null)
+                conn.close();
+        }       
+        
+    }
+
+} 
     
+    
+  /*  public static ArrayList listar(String nomePesquisa) throws SQLException, ClassNotFoundException{
+        
+        Connection conn = null;
+        PreparedStatement  preparedStatement = null;
+        ResultSet rs = null;
+        String SQL = "";
+        ArrayList<Praca> lista = new ArrayList<>();
+                
+        // Obtem conexao com BD
+        conn = ConnectionFactory.getConnection();
+        
+        // Comando SQL 
+        SQL = "SELECT * FROM tab_praca WHERE nome like ? ";
 
-}
+        preparedStatement = conn.prepareStatement(SQL);
+        
+        nomePesquisa = "%" + nomePesquisa + "%";
+        
+        preparedStatement.setString(1, nomePesquisa);
+
+        // Para buscar informações
+        rs = preparedStatement.executeQuery();   
+
+        // Verifica se possui dados
+        while (rs.next()) {
+            
+            Praca p = new Praca();
+            
+            p.setId_praca(rs.getInt("id_praca"));
+            p.setNome(rs.getString("nome"));
+            p.setTipo(rs.getString("tipo"));
+            p.setValor_diario(rs.getDouble("valor_diario"));
+            
+            lista.add(p);
+         } 
+        
+        // Fechar conexao
+        conn.close();
+        
+        return lista;
+    }*/

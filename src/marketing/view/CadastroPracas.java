@@ -5,7 +5,10 @@
  */
 package marketing.view;
 
+import static java.lang.Double.parseDouble;
 import javax.swing.JOptionPane;
+import marketing.dao.PracaDAO;
+import marketing.model.Praca;
 
 /**
  *
@@ -13,13 +16,14 @@ import javax.swing.JOptionPane;
  */
 public class CadastroPracas extends javax.swing.JFrame {
 
-  
+        Praca praca;
             
             
     public CadastroPracas() {
         initComponents();
         
         setLocationRelativeTo(null);
+        this.praca = new Praca();
         jLabelMsgObrigatotioNome.setVisible(false);
         jLabelMsgObrigatotioMedia.setVisible(false);
         
@@ -71,6 +75,11 @@ public class CadastroPracas extends javax.swing.JFrame {
         });
 
         ComboBoxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "selecione", "Digital (imagem)", "Digital (video)", "Televisivo", "Audio", "Impresso" }));
+        ComboBoxTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboBoxTipoActionPerformed(evt);
+            }
+        });
 
         btSalvar.setText("Salvar");
         btSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -201,11 +210,43 @@ public class CadastroPracas extends javax.swing.JFrame {
         }
           if ((txtNome.getText().length()>0)
                 &&(txtMedia.getText().length()> 0)){
-               JOptionPane.showMessageDialog(null, "Dados Validados !!");
         } else {
             JOptionPane.showMessageDialog(null, "Preencha os campos Obrigatórios !!");
               
           }
+          
+        
+         praca.setNome(txtNome.getText().trim());
+         
+        int tipo = ComboBoxTipo.getSelectedIndex();
+         String tipo1="";
+         
+        if(tipo==1){
+            tipo1="Digital(imagem)";
+        }else if(tipo==2){
+            tipo1="Digital(video)";    
+        }else if(tipo==3){
+            tipo1="Televisivo";
+        }else if(tipo==4){
+            tipo1="Audio";
+        }else if(tipo==5){
+            tipo1="Impresso";
+        }     
+         praca.setTipo(tipo1);
+        
+         praca.setValor_diario(parseDouble(txtMedia.getText()));
+             
+          PracaDAO pracaDAO = new PracaDAO();
+          boolean resultado;
+
+        resultado = pracaDAO.inserirPraca(praca);
+        if (resultado) {
+            JOptionPane.showMessageDialog(null, "Praca inserida com sucesso!", "Inclusão", JOptionPane.INFORMATION_MESSAGE);
+        }    
+          
+          
+          
+          
           
            /*
          if (txtNome.getText().length()>5) {
@@ -232,6 +273,10 @@ public class CadastroPracas extends javax.swing.JFrame {
     private void btVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVoltarActionPerformed
   this.dispose();
     }//GEN-LAST:event_btVoltarActionPerformed
+
+    private void ComboBoxTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ComboBoxTipoActionPerformed
 
     /**
      * @param args the command line arguments

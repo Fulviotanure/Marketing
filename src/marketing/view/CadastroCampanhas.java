@@ -5,6 +5,7 @@
  */
 package marketing.view;
 
+import static java.lang.Double.parseDouble;
 import javax.swing.JOptionPane;
 import marketing.model.Campanha;
 import marketing.dao.CampanhaDAO;
@@ -50,7 +51,7 @@ Campanha campanha;
         jLabel6 = new javax.swing.JLabel();
         btNovapraca = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbSlcPraca = new javax.swing.JTable();
+        tabCampanha = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDescricao = new javax.swing.JTextArea();
@@ -61,6 +62,8 @@ Campanha campanha;
         btLimpar = new javax.swing.JButton();
         btVoltar = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtValor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,12 +100,9 @@ Campanha campanha;
             }
         });
 
-        tbSlcPraca.setModel(new javax.swing.table.DefaultTableModel(
+        tabCampanha.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Praça", "Tipo", "valor"
@@ -123,11 +123,11 @@ Campanha campanha;
                 return canEdit [columnIndex];
             }
         });
-        tbSlcPraca.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tbSlcPraca);
-        if (tbSlcPraca.getColumnModel().getColumnCount() > 0) {
-            tbSlcPraca.getColumnModel().getColumn(0).setResizable(false);
-            tbSlcPraca.getColumnModel().getColumn(2).setResizable(false);
+        tabCampanha.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tabCampanha);
+        if (tabCampanha.getColumnModel().getColumnCount() > 0) {
+            tabCampanha.getColumnModel().getColumn(0).setResizable(false);
+            tabCampanha.getColumnModel().getColumn(2).setResizable(false);
         }
 
         jLabel7.setText("Descrição");
@@ -171,6 +171,8 @@ Campanha campanha;
         jLabel10.setForeground(new java.awt.Color(255, 0, 0));
         jLabel10.setText("* Campo Obrigatório");
 
+        jLabel4.setText("Valor Total");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -197,8 +199,7 @@ Campanha campanha;
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelMsgObrigatorioLink)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,6 +235,17 @@ Campanha campanha;
                                     .addComponent(txtPeriodo)))
                             .addComponent(jScrollPane2))))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,17 +270,21 @@ Campanha campanha;
                     .addComponent(btNovapraca))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(txtLink, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelMsgObrigatorioLink)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btCadastrar)
                     .addComponent(btLimpar)
@@ -317,10 +333,11 @@ Campanha campanha;
         } else {
             JOptionPane.showMessageDialog(null, "Preencha os campos Obrigatórios !!");
          }
-         
+         campanha.setValor(parseDouble(txtValor.getText()));  
          campanha.setNome(txtNome.getText().trim());        
          campanha.setPeriodo(txtPeriodo.getText().trim());
          campanha.setDescricao(txtDescricao.getText().trim());
+         campanha.setLink(txtLink.getText());
          
           CampanhaDAO campanhaDAO = new CampanhaDAO();
         boolean resultado;
@@ -369,6 +386,7 @@ Campanha campanha;
            txtPeriodo.setText("");
            txtDescricao.setText("");
            txtLink.setText("");
+           
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void txtPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPeriodoActionPerformed
@@ -427,6 +445,7 @@ Campanha campanha;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -435,10 +454,11 @@ Campanha campanha;
     private javax.swing.JLabel jLabelMsgObrigatorioPeriodo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tbSlcPraca;
+    private javax.swing.JTable tabCampanha;
     private javax.swing.JTextArea txtDescricao;
     private javax.swing.JTextField txtLink;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtPeriodo;
+    private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
 }
